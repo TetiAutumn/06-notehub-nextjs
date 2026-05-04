@@ -13,7 +13,7 @@ export interface CreateNoteOptions {
 }
 
 const headers = {
-    'Authorization': `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
 }
 
 export const fetchNotes = async (search: string = '', page: number = 1): Promise<FetchNotesResponse> => {

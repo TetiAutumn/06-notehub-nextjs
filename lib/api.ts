@@ -60,3 +60,16 @@ export const deleteNote = async (id: string): Promise<Note> => {
         throw new Error('error to delete a note');
     }
 }
+
+export const fetchNoteById = async (id: string): Promise<Note> => {
+    try {
+        const response = await axios.get<Note>(
+            `https://notehub-public.goit.study/api/notes/${id}`,
+            { headers }
+        );
+        return response.data;
+    } catch (e) {
+        console.log(e);
+        throw new Error('error to fetch note by id');
+    }
+}

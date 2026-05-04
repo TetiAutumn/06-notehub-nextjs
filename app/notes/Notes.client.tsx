@@ -19,8 +19,8 @@ export default function Notes() {
     const { data } = useQuery({
         queryKey: ["notes", search, page],
         queryFn: () => fetchNotes(search, page),
-        refetchOnMount: false,
         placeholderData: keepPreviousData,
+        refetchOnMount: false,
     });
 
     const debouncedSearch = useDebouncedCallback((value: string) => {

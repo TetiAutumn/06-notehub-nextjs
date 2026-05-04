@@ -1,9 +1,9 @@
 "use client";
-import { InputEventHandler, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import NoteList from "@/components/NoteList/NoteList";
 import { fetchNotes } from "@/lib/api";
-import { NoteForm } from "@/components/NoteForm/NoteForm.client";
+import { NoteForm } from "@/components/NoteForm/NoteForm";
 import { Modal } from "@/components/Modal/Modal";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
@@ -13,7 +13,6 @@ import css from "./Notes.module.css";
 
 export default function Notes() {
     const [search, setSearch] = useState("");
-    const [isEnabled, setIsEnabled] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [page, setPage] = useState<number>(1);
 
@@ -21,17 +20,14 @@ export default function Notes() {
         queryKey: ["notes", search, page],
         queryFn: () => fetchNotes(search, page),
         refetchOnMount: false,
-        enabled: !!isEnabled,
     });
 
     const debouncedSearch = useDebouncedCallback((value: string) => {
-        setIsEnabled(false);
         setPage(1);
         setSearch(value);
-        setIsEnabled(true);
     }, 500);
 
-    const handleSearch: InputEventHandler<HTMLInputElement> = (event) => {
+    const handleSearch: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         debouncedSearch((event.target as HTMLInputElement).value);
     };
 
@@ -42,7 +38,7 @@ export default function Notes() {
     return (
         <>
             <div className={css.toolbar}>
-                <SearchBox onInput={handleSearch} />
+                <SearchBox onSearch={handleSearch} />
                 {data && data.totalPages > 0 && (
                     <Pagination
                         page={page}
